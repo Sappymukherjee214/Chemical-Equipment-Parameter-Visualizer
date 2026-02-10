@@ -168,3 +168,47 @@ class UploadViewSet(viewsets.ViewSet):
                 {'error': f'Unexpected error: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import os
+
+@csrf_exempt
+def create_superuser(request):
+    """
+    Temporary endpoint to create a superuser without shell access.
+    DELETE THIS AFTER CREATING YOUR ADMIN USER!
+    
+    Visit: https://your-backend-url.onrender.com/api/create-superuser/
+    """
+    # Security: Only allow in production if SECRET_KEY env var is set
+    if os.environ.get('DEBUG', 'False') == 'False':
+        # Check if superuser already exists
+        if User.objects.filter(is_superuser=True).exists():
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Superuser already exists. Please delete this endpoint for security.'
+            }, status=400)
+    
+    try:
+        # Create superuser with default credentials
+        user = User.objects.create_superuser(
+            username='admin',
+            email='admin@example.com',
+            password='admin123'  # Change this immediately after login!
+        )
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Superuser created successfully!',
+            'username': 'admin',
+            'password': 'admin123',
+            'warning': 'CHANGE THIS PASSWORD IMMEDIATELY! Delete this endpoint after use.'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
+
