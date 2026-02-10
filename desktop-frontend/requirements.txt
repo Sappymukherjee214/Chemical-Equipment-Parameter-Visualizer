@@ -1,0 +1,5 @@
+PyQt5==5.15.10
+matplotlib>=3.9.0
+requests==2.31.0
+pandas>=3.0.0
+
