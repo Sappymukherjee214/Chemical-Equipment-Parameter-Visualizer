@@ -432,13 +432,16 @@ class MainWindow(QMainWindow):
         
         analytics = self.current_analytics
         
+        # Use empty dict if dataset is not yet loaded
+        dataset_info = self.current_dataset if self.current_dataset else {}
+        
         summary = f"""
 ╔══════════════════════════════════════════════════════════════╗
 ║          CHEMICAL EQUIPMENT PARAMETER SUMMARY                ║
 ╚══════════════════════════════════════════════════════════════╝
 
-Dataset: {self.current_dataset.get('name', 'N/A')}
-Uploaded: {self.current_dataset.get('uploaded_at', 'N/A')}
+Dataset: {dataset_info.get('name', 'N/A')}
+Uploaded: {dataset_info.get('uploaded_at', 'N/A')}
 
 ═══════════════════════════════════════════════════════════════
 

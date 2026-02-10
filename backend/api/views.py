@@ -59,7 +59,7 @@ class DatasetViewSet(viewsets.ModelViewSet):
         serializer = AnalyticsSerializer(analytics_data)
         return Response(serializer.data)
     
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['get'], url_path='download-report')
     def download_report(self, request, pk=None):
         """
         Generate and download PDF report for a dataset.
